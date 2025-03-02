@@ -1,0 +1,1 @@
+C:\src\flashcard_app\build\app\intermediates\cxx\Debug\2i5z1n30\obj\x86_64

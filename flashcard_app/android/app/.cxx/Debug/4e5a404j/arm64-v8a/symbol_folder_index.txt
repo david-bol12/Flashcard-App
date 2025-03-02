@@ -1,0 +1,1 @@
+C:\src\flashcard_app\build\app\intermediates\cxx\Debug\4e5a404j\obj\arm64-v8a

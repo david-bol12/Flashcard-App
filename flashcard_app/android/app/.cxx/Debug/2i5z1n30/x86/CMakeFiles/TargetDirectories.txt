@@ -1,0 +1,2 @@
+C:/src/flashcard_app/android/app/.cxx/Debug/2i5z1n30/x86/CMakeFiles/edit_cache.dir
+C:/src/flashcard_app/android/app/.cxx/Debug/2i5z1n30/x86/CMakeFiles/rebuild_cache.dir
