@@ -138,7 +138,10 @@ class _FlashcardMenuScreenState extends State<FlashcardMenuScreen> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => Dialog(
-                    child: TestOptionsDialog(collectionPath: widget.collectionPath,),
+                    child: TestOptionsDialog(
+                      collectionPath: widget.collectionPath,
+                      setName: widget.setName,
+                    ),
                   )
                 );
               },
@@ -352,9 +355,11 @@ class TestOptionsDialog extends StatefulWidget {
   const TestOptionsDialog({
     super.key,
     required this.collectionPath,
+    required this.setName
   });
 
   final String collectionPath;
+  final String setName;
 
   @override
   State<TestOptionsDialog> createState() => _TestOptionsDialogState();
@@ -417,6 +422,8 @@ class _TestOptionsDialogState extends State<TestOptionsDialog> {
                       Navigator.push(context, createRoute(BasicTestScreen(
                         flashcards: flashcards,
                         reversedReview: testOptions['Reversed Review'],
+                        collectionPath: widget.collectionPath,
+                        setName: widget.setName,
                       )));
                     }
                   });

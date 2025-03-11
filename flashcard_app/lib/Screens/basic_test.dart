@@ -12,10 +12,14 @@ class BasicTestScreen extends StatefulWidget {
     super.key,
     required this.flashcards,
     required this.reversedReview,
+    required this.collectionPath,
+    required this.setName
   });
 
   final List<QueryDocumentSnapshot<Map<String, dynamic>>> flashcards;
   final bool reversedReview;
+  final String collectionPath;
+  final String setName;
 
   @override
   State<BasicTestScreen> createState() => _BasicTestScreenState();
@@ -30,10 +34,13 @@ class _BasicTestScreenState extends State<BasicTestScreen> {
     setState(() {
       if(flashcardIndex >= widget.flashcards.length - 1) {
         Navigator.pop(context);
-        Navigator.push(context, createRoute(TestResultsScreen(
-          correctFlashcards: correctFlashcards,
-          incorrectFlashcards: incorrectFlashcards,
-          reversedReview: widget.reversedReview,
+        Navigator.push(context, createRoute(
+          TestResultsScreen(
+            correctFlashcards: correctFlashcards,
+            incorrectFlashcards: incorrectFlashcards,
+            reversedReview: widget.reversedReview,
+            collectionPath: widget.collectionPath,
+            setName: widget.setName,
         )));
       }
       else {

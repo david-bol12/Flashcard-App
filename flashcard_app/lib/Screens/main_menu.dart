@@ -38,12 +38,17 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     NotificationService.onClickNotification.stream.listen(
       (event) {
         if(event != null) {
-          final String collectionPath = event;
-          Navigator.push(context, createRoute(FlashcardMenuScreen(collectionPath: collectionPath, setName: 'Flashcard App',)));
+          List<String> payload = event.split('|*split*|');
+          final String collectionPath = payload[0];
+          final String setName = payload.length > 1 ? payload[1] : 'Flashcard App';
+          Navigator.push(context, createRoute(FlashcardMenuScreen(collectionPath: collectionPath, setName: setName,)));
           showDialog(
               context: context,
               builder: (BuildContext context) => Dialog(
-                child: TestOptionsDialog(collectionPath: collectionPath,),
+                child: TestOptionsDialog(
+                  collectionPath: collectionPath,
+                  setName: setName,
+                ),
               )
           );
           NotificationService.onClickNotification.add(null);
