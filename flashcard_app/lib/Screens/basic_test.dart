@@ -63,7 +63,7 @@ class _BasicTestScreenState extends State<BasicTestScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Flashcard(
+            child: FlashcardWidget(
               front: widget.reversedReview ? widget.flashcards[flashcardIndex].data()['Back'] : widget.flashcards[flashcardIndex].data()['Front'],
               back: widget.reversedReview ? widget.flashcards[flashcardIndex].data()['Front'] : widget.flashcards[flashcardIndex].data()['Back'],
               flipController: flipController,

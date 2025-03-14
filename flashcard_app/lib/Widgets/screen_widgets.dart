@@ -19,14 +19,24 @@ Route createRoute(Widget location) {
 }
 
 AppBar mainAppBar({
-    required String title,
-    required TextEditingController searchBarController,
-    required Function(String) onSearch,
-    List<Widget>? actions,
-  }) {
+  required String title,
+  required TextEditingController searchBarController,
+  required Function(String) onSearch,
+  Icon? icon,
+  List<Widget>? actions,
+}) {
   return AppBar(
     backgroundColor: Color(0xff2176ff),
-    title: Text(title),
+    title: Row(
+      children: [
+        if(icon != null)
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: icon,
+          ),
+        Text(title),
+      ],
+    ),
     bottom: PreferredSize(
         preferredSize: const Size.fromHeight(73),
         child: Padding(
@@ -35,9 +45,7 @@ AppBar mainAppBar({
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search_rounded),
               hintText: 'Search Topics or Sets...',
-              hintStyle: TextStyle(
-                  color: Colors.grey.shade700
-              ),
+              hintStyle: TextStyle(color: Colors.grey.shade700),
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(
@@ -50,8 +58,7 @@ AppBar mainAppBar({
               onSearch(value);
             },
           ),
-        )
-    ),
+        )),
     actions: actions,
   );
 }

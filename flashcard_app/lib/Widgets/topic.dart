@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flashcard_app/Screens/main_menu.dart';
 
 class Topic extends StatelessWidget {
-  const Topic({
-    super.key,
-    required this.name,
-    required this.collectionPath,
-    required this.id,
-    required this.color
-  });
+  const Topic(
+      {super.key,
+      required this.name,
+      required this.collectionPath,
+      required this.id,
+      required this.color});
 
   final String name;
   final String collectionPath;
@@ -17,6 +16,8 @@ class Topic extends StatelessWidget {
 
   // final void onTap;
 
+
+  //TODO DRY Code
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -31,30 +32,34 @@ class Topic extends StatelessWidget {
           vertical: 10,
         ),
         leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Icon(Icons.folder, color: Colors.grey,)
-        ),
+            backgroundColor: Colors.white,
+            child: Icon(
+              Icons.folder,
+              color: Colors.grey,
+            )),
         trailing: PopupMenuButton(
             iconSize: 20,
             icon: const Icon(Icons.edit),
             itemBuilder: (context) => [
-              PopupMenuItem(
-                onTap: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => Dialog(
-                      child: EditTopic(collectionPath: collectionPath, id: id, name: name,),
-                    )
-                ),
-                child: const Text('Edit'),
-              ),
-              PopupMenuItem(
-                onTap: () {
-                  db.collection(collectionPath).doc(id).delete();
-                },
-                child: const Text('Delete'),
-              ),
-            ]
-        ),
+                  PopupMenuItem(
+                    onTap: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                              child: EditTopic(
+                                collectionPath: collectionPath,
+                                id: id,
+                                name: name,
+                              ),
+                            )),
+                    child: const Text('Edit'),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      db.collection(collectionPath).doc(id).delete();
+                    },
+                    child: const Text('Delete'),
+                  ),
+                ]),
         title: Text(
           name,
           style: const TextStyle(
@@ -72,13 +77,10 @@ class Topic extends StatelessWidget {
 }
 
 class CreateTopic extends StatelessWidget {
-   CreateTopic({
-     super.key,
-     required this.collectionPath
-   });
+  CreateTopic({super.key, required this.collectionPath});
 
-   final TextEditingController topicName = TextEditingController();
-   final String collectionPath;
+  final TextEditingController topicName = TextEditingController();
+  final String collectionPath;
 
   @override
   Widget build(BuildContext context) {
@@ -102,27 +104,13 @@ class CreateTopic extends StatelessWidget {
             ),
             controller: topicName,
             decoration: const InputDecoration(
-              hintText: 'Topic Name',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20))
-              )
-            ),
+                hintText: 'Topic Name',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)))),
           ),
-          const SizedBox(height: 10,),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Colour',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              )
-            ),
+          const SizedBox(
+            height: 10,
           ),
-          const SizedBox(height: 10),
           Row(
             children: [
               Container(
@@ -137,8 +125,14 @@ class CreateTopic extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   String id = DateTime.now().toString();
-                  db.collection(collectionPath).doc(id).set({'Name' : topicName.text, 'Type' : 'Topic'});
-                  db.collection('$collectionPath/$id/$id').doc('~~info~~').set({'Type' : 'Info'});
+                  db
+                      .collection(collectionPath)
+                      .doc(id)
+                      .set({'Name': topicName.text, 'Type': 1});
+                  db
+                      .collection('$collectionPath/$id/$id')
+                      .doc('~~info~~')
+                      .set({'Type': -1});
                   Navigator.pop(context);
                 },
                 child: const Text('Add Topic'),
@@ -166,11 +160,10 @@ class EditTopic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     editedName.text = name;
 
-    void submitName (String newName) {
-      db.collection(collectionPath).doc(id).update({'Name' : newName});
+    void submitName(String newName) {
+      db.collection(collectionPath).doc(id).update({'Name': newName});
       Navigator.pop(context);
     }
 
@@ -182,28 +175,23 @@ class EditTopic extends StatelessWidget {
         children: [
           const Text(
             'Edit Name',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.0
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           TextField(
-            autofocus: true,
-            decoration: const InputDecoration(
-                hintText: 'Topic Name',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                )
-            ),
-            controller: editedName,
-            onSubmitted: (String name) {
-              submitName(name);
-            }
-          )
+              autofocus: true,
+              decoration: const InputDecoration(
+                  hintText: 'Topic Name',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)))),
+              controller: editedName,
+              onSubmitted: (String name) {
+                submitName(name);
+              })
         ],
       ),
     );
   }
 }
-
