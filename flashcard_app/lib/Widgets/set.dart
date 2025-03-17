@@ -128,8 +128,8 @@ class CreateSet extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   String id = DateTime.now().toString();
-                  db.collection(collectionPath).doc(id).set({'Name' : setName.text, 'Type' : 'Set'});
-                  db.collection('$collectionPath/$id/$id').doc('~~info~~').set({'Type' : 'Info', 'Status' : 0});
+                  db.collection(collectionPath).doc(id).set({'Name' : setName.text, 'Type' : 2});
+                  db.collection('$collectionPath/$id/$id').doc('~~info~~').set({'Type' : -1, 'Status' : 0});
                   // A collection must have at least 1 document -> info doc fulfills this
                   Navigator.pop(context);
                 },
