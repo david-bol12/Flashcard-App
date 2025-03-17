@@ -53,6 +53,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   child: TestOptionsDialog(
                     collectionPath: collectionPath,
                     setName: setName,
+                    testOptions: {
+                      'Shuffle' : false,
+                      'Reversed Review' : false,
+                    },
                   ),
                 ));
         NotificationService.onClickNotification.add(null);

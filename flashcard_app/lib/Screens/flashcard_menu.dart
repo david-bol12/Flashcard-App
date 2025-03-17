@@ -24,7 +24,7 @@ class FlashcardMenuScreen extends StatefulWidget {
     this.exportCSV = true,
     this.reorder = true,
     this.emptySetText = 'Add a Flashcard',
-    this.flashcardInfoReviewList = false,
+    this.reviewList = false,
   });
 
   const FlashcardMenuScreen.reviewList({
@@ -38,7 +38,7 @@ class FlashcardMenuScreen extends StatefulWidget {
     this.exportCSV = true,
     this.reorder = true,
     this.emptySetText = 'No Flashcards to Review!',
-    this.flashcardInfoReviewList = true,
+    this.reviewList = true,
   });
 
   final String collectionPath;
@@ -50,7 +50,7 @@ class FlashcardMenuScreen extends StatefulWidget {
   final bool exportCSV;
   final bool reorder;
   final String emptySetText;
-  final bool flashcardInfoReviewList;
+  final bool reviewList;
 
   @override
   State<FlashcardMenuScreen> createState() => _FlashcardMenuScreenState();
@@ -75,109 +75,110 @@ class _FlashcardMenuScreenState extends State<FlashcardMenuScreen> {
         actions: [
           PopupMenuButton(
               itemBuilder: (context) => [
-                if(widget.uploadCSV)
-                    PopupMenuItem(
-                      onTap: () => showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => Dialog(
-                            child: UploadCsv(
-                          collectionPath: widget.collectionPath,
-                        )),
+                    if (widget.uploadCSV)
+                      PopupMenuItem(
+                        onTap: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                              child: UploadCsv(
+                            collectionPath: widget.collectionPath,
+                          )),
+                        ),
+                        child: const Text('Upload from CSV'),
                       ),
-                      child: const Text('Upload from CSV'),
-                    ),
-                  if(widget.exportCSV)
-                    PopupMenuItem(
-                      onTap: () async {
-                        exportCsv(widget.collectionPath, widget.setName);
-                      },
-                      child: const Text('Export as CSV'),
-                    ),
-                  if(widget.reorder)
-                    PopupMenuItem(
-                      onTap: () async {
-                        QuerySnapshot<Map<String, dynamic>> flashcardsSnapshot =
-                            await db
-                                .collection(widget.collectionPath)
-                                .orderBy('Index')
-                                .get();
-                        List<QueryDocumentSnapshot<Map<String, dynamic>>>
-                            flashcards = flashcardsSnapshot.docs;
-                        if (context.mounted) {
-                          showDialog(
-                              //TODO: Clean Messy code
-                              context: context,
-                              builder: (BuildContext context) => Scaffold(
-                                    appBar: AppBar(
-                                      title: Text(widget.appBarTitle),
-                                    ),
-                                    floatingActionButton:
-                                        FloatingActionButton.extended(
-                                            onPressed: () {
-                                              int index = 0;
-                                              for (QueryDocumentSnapshot<
-                                                      Map<String,
-                                                          dynamic>> flashcard
-                                                  in flashcards) {
-                                                db
-                                                    .collection(
-                                                        widget.collectionPath)
-                                                    .doc(flashcard.id)
-                                                    .update({'Index': index});
-                                                index++;
-                                              }
-                                              Navigator.pop(context);
-                                            },
-                                            label: const Row(
-                                              children: [
-                                                Text('Done'),
-                                                Icon(Icons.done),
-                                              ],
-                                            )),
-                                    body: ReorderableListView.builder(
-                                        padding: EdgeInsets.only(bottom: 100),
-                                        onReorder: (oldIndex, newIndex) {
-                                          QueryDocumentSnapshot<
-                                                  Map<String, dynamic>>
-                                              flashcard = flashcards[oldIndex];
-                                          flashcards.removeAt(oldIndex);
-                                          flashcards.insert(
-                                              newIndex > oldIndex
-                                                  ? newIndex - 1
-                                                  : newIndex,
-                                              flashcard);
-                                        },
-                                        itemCount: flashcards.length,
-                                        itemBuilder: (context, index) {
-                                          String id = flashcards[index].id;
-                                          String front = flashcards[index]
-                                                  .data()['Front'] ??
-                                              '';
-                                          String back = flashcards[index]
-                                                  .data()['Back'] ??
-                                              '';
-                                          String type =
-                                              flashcards[index].data()['Type'];
-                                          if (type == 'Flashcard') {
-                                            return FlashcardInfo(
-                                              front: front,
-                                              back: back,
-                                              collectionPath:
-                                                  widget.collectionPath,
-                                              id: id,
+                    if (widget.exportCSV)
+                      PopupMenuItem(
+                        onTap: () async {
+                          exportCsv(widget.collectionPath, widget.setName);
+                        },
+                        child: const Text('Export as CSV'),
+                      ),
+                    if (widget.reorder)
+                      PopupMenuItem(
+                        onTap: () async {
+                          QuerySnapshot<Map<String, dynamic>>
+                              flashcardsSnapshot = await db
+                                  .collection(widget.collectionPath)
+                                  .orderBy('Index')
+                                  .get();
+                          List<QueryDocumentSnapshot<Map<String, dynamic>>>
+                              flashcards = flashcardsSnapshot.docs;
+                          if (context.mounted) {
+                            showDialog(
+                                //TODO: Clean Messy code
+                                context: context,
+                                builder: (BuildContext context) => Scaffold(
+                                      appBar: AppBar(
+                                        title: Text(widget.appBarTitle),
+                                      ),
+                                      floatingActionButton:
+                                          FloatingActionButton.extended(
+                                              onPressed: () {
+                                                int index = 0;
+                                                for (QueryDocumentSnapshot<
+                                                        Map<String,
+                                                            dynamic>> flashcard
+                                                    in flashcards) {
+                                                  db
+                                                      .collection(
+                                                          widget.collectionPath)
+                                                      .doc(flashcard.id)
+                                                      .update({'Index': index});
+                                                  index++;
+                                                }
+                                                Navigator.pop(context);
+                                              },
+                                              label: const Row(
+                                                children: [
+                                                  Text('Done'),
+                                                  Icon(Icons.done),
+                                                ],
+                                              )),
+                                      body: ReorderableListView.builder(
+                                          padding: EdgeInsets.only(bottom: 100),
+                                          onReorder: (oldIndex, newIndex) {
+                                            QueryDocumentSnapshot<
+                                                    Map<String, dynamic>>
+                                                flashcard =
+                                                flashcards[oldIndex];
+                                            flashcards.removeAt(oldIndex);
+                                            flashcards.insert(
+                                                newIndex > oldIndex
+                                                    ? newIndex - 1
+                                                    : newIndex,
+                                                flashcard);
+                                          },
+                                          itemCount: flashcards.length,
+                                          itemBuilder: (context, index) {
+                                            String id = flashcards[index].id;
+                                            String front = flashcards[index]
+                                                    .data()['Front'] ??
+                                                '';
+                                            String back = flashcards[index]
+                                                    .data()['Back'] ??
+                                                '';
+                                            String type = flashcards[index]
+                                                .data()['Type'];
+                                            if (type == 'Flashcard') {
+                                              return FlashcardInfo(
+                                                front: front,
+                                                back: back,
+                                                collectionPath:
+                                                    widget.collectionPath,
+                                                id: id,
+                                                key: Key(index.toString()),
+                                                reorder: true,
+                                              );
+                                            }
+                                            return SizedBox.shrink(
                                               key: Key(index.toString()),
-                                              reorder: true,
                                             );
-                                          }
-                                          return SizedBox.shrink(
-                                            key: Key(index.toString()),
-                                          );
-                                        }),
-                                  ));
-                        }
-                      },
-                      child: const Text('Reorder Flashcards'),
-                    )
+                                          }),
+                                    ));
+                          }
+                        },
+                        child: const Text('Reorder Flashcards'),
+                      )
                   ])
         ],
       ),
@@ -193,7 +194,7 @@ class _FlashcardMenuScreenState extends State<FlashcardMenuScreen> {
                 onPressed: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => Dialog(
-                      backgroundColor: Theme.of(context).dialogBackgroundColor,
+                      backgroundColor: Theme.of(context). dialogBackgroundColor,
                       child: CreateFlashcard(
                           collectionPath: widget.collectionPath)),
                 ),
@@ -203,15 +204,27 @@ class _FlashcardMenuScreenState extends State<FlashcardMenuScreen> {
             FloatingActionButton.extended(
               heroTag: 'test',
               onPressed: () async {
-                int count = await db.collection(widget.collectionPath).count().get().then((result) => result.count!);
-                if(count > 0) {
+                int count = await db
+                    .collection(widget.collectionPath)
+                    .count()
+                    .get()
+                    .then((result) => result.count!);
+                if (count > 0 && context.mounted) {
                   showDialog(
                       context: context,
-                      builder: (BuildContext context) =>
-                          Dialog(
+                      builder: (BuildContext context) => Dialog(
                             child: TestOptionsDialog(
                               collectionPath: widget.collectionPath,
                               setName: widget.setName,
+                              testOptions: widget.reviewList ? {
+                                'Shuffle' : false,
+                                'Reversed Review' : false,
+                                'Remove on Correct' : true,
+                              } :
+                              {
+                                'Shuffle' : false,
+                                'Reversed Review' : false,
+                              }
                             ),
                           ));
                 }
@@ -261,7 +274,7 @@ class _FlashcardMenuScreenState extends State<FlashcardMenuScreen> {
                       id: id,
                       frontImage: frontImage,
                       backImage: backImage,
-                      reviewList: widget.flashcardInfoReviewList,
+                      reviewList: widget.reviewList,
                     );
                   }
                   return null;
@@ -429,21 +442,30 @@ void exportCsv(String collectionPath, String setName) async {
 
 class TestOptionsDialog extends StatefulWidget {
   const TestOptionsDialog(
-      {super.key, required this.collectionPath, required this.setName});
+      {
+        super.key,
+        required this.collectionPath,
+        required this.setName,
+        required this.testOptions,
+      });
 
   final String collectionPath;
   final String setName;
+  final Map<String, dynamic> testOptions;
 
   @override
   State<TestOptionsDialog> createState() => _TestOptionsDialogState();
 }
 
 class _TestOptionsDialogState extends State<TestOptionsDialog> {
-  Map<String, dynamic> testOptions = {
-    'Shuffle': false,
-    'Reversed Review': false,
-    // 'Focused Review' : false,
-  };
+
+  Map<String, dynamic> testOptions = {};
+
+  @override
+  void initState() {
+    testOptions = widget.testOptions;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -491,19 +513,16 @@ class _TestOptionsDialogState extends State<TestOptionsDialog> {
                         .then((flashcardsSnapshot) {
                       List<QueryDocumentSnapshot<Map<String, dynamic>>>
                           flashcards = flashcardsSnapshot.docs;
-                      if (testOptions['Shuffle']) {
+                      if (testOptions['Shuffle'] == true) {
                         flashcards.shuffle();
-                      }
-                      if (testOptions['Focused Review'] ?? false) {
-                        flashcards.sort((a, b) =>
-                            a.data()['Status'].compareTo(b.data()['Status']));
                       }
                       if (context.mounted) {
                         Navigator.push(
                             context,
                             createRoute(BasicTestScreen(
                               flashcards: flashcards,
-                              reversedReview: testOptions['Reversed Review'],
+                              removeOnCorrect: testOptions['Remove on Correct'] ?? false,
+                              reversedReview: testOptions['Reversed Review'] ?? false,
                               collectionPath: widget.collectionPath,
                               setName: widget.setName,
                             )));
