@@ -1,3 +1,12 @@
+* A flutter package I made a copy of as I needed to edit the 'FlipController' class to include a reset method
+ ```dart
+void reset() {
+    duration = const Duration(seconds: 0);
+    _angle = 0;
+    _angleController.sink.add(_angle);
+  }
+```
+
 # Animated Flip Card
 A Flutter package that creates an animation of a flipping card.
 
