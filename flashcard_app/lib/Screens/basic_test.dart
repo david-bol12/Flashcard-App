@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flashcard_app/Widgets/flashcard.dart';
 import 'package:animated_flip_widget/animated_flip_widget.dart';
 import 'test_results.dart';
+import 'main_menu.dart';
 
 const double padding = 20;
 
@@ -11,7 +12,8 @@ class BasicTestScreen extends StatefulWidget {
   const BasicTestScreen({
     super.key,
     required this.flashcards,
-    required this.reversedReview,
+    this.reversedReview = false,
+    this.removeOnCorrect = false,
     required this.collectionPath,
     required this.setName
   });
@@ -20,6 +22,7 @@ class BasicTestScreen extends StatefulWidget {
   final bool reversedReview;
   final String collectionPath;
   final String setName;
+  final bool removeOnCorrect;
 
   @override
   State<BasicTestScreen> createState() => _BasicTestScreenState();
@@ -82,9 +85,10 @@ class _BasicTestScreenState extends State<BasicTestScreen> {
               });
             },
             onRight: () {
-                // db.collection(widget.collectionPath).doc(widget.flashcards[flashcardIndex].id)
-                //     .update({'Status' : widget.flashcards[flashcardIndex].data()['Status'] + 1});
                 correctFlashcards.add(widget.flashcards[flashcardIndex]);
+                if(widget.removeOnCorrect == true) {
+                  db.collection(widget.collectionPath).doc(widget.flashcards[flashcardIndex].id).delete();
+                }
                 forward();
             },
             onWrong: () {
