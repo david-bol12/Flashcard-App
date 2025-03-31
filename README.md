@@ -3,7 +3,7 @@
 
 ⚠️ Account system is not yet set up, feel free to add flashcards but please do not edit any prexisting flashcards ⚠️ <br/>
 
-<img width="200" alt="Screenshot 2025-03-17 114716" src="https://github.com/user-attachments/assets/db9b380d-1e53-4a86-a2cb-e8116ecd82ac" />
+<img width="200" alt="Screenshot 2025-03-17 114716" src="https://github.com/user-attachments/assets/db9b380d-1e53-4a86-a2cb-e8116ecd82ac" padding=20/>
 <img width="200" alt="Screenshot 2025-03-17 114716" src="https://github.com/user-attachments/assets/db9b380d-1e53-4a86-a2cb-e8116ecd82ac" />
 
 
