@@ -3,4 +3,4 @@
 
 ⚠️ Account system is not yet set up, feel free to add flashcards but please do not edit any prexisting flashcards ⚠️ <br/>
 
-![CreateaTopic--ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/f19c7efb-7ec7-4c35-8662-5a85cc6ecab6)
+![CreateaTopic--ezgif com-crop](https://github.com/user-attachments/assets/803e081a-3629-4b6c-b50c-a317c568f6d9)
