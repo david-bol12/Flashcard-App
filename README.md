@@ -168,8 +168,9 @@ db
 ```
 
 Topics can be edited/deleted by clicking the trailing edit icon
-
-<img height="500" src="https://github.com/user-attachments/assets/5f38acf1-49d8-4441-9ed6-427fc03fed23">
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/5f38acf1-49d8-4441-9ed6-427fc03fed23">
+</p>
 
 
 ### Creating a Set
