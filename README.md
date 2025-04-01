@@ -20,6 +20,13 @@ Topic -> Set -> Flashcard
   ** Types are saved as integers to make them easy to index on Menu Screen **
 
 ### Creating a Topic
+
+When creating a Topic a dialog box is shown where the user can input the Topic name
+On creating the Topic the below function is called creating:
+ - A document in the current Collection Path
+ - A collection in said document
+ - An info doc in said collection to keep the collection open. Firestore requires at least 1 doc in a collection.
+
  ```dart
 String id = DateTime.now().toString(); // Using current date as ensures unique id
 db // Instance of Firebase Firestore
