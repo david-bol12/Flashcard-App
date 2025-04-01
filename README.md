@@ -60,47 +60,47 @@ Then they the list of filteredItems is intputted into a ListView.builder, displa
 
 ```dart
 return ListView.builder(
-              padding: EdgeInsets.only(bottom: 100),
-              itemCount: filteredItems.length,
-              itemBuilder: (context, index) {
-                String id = filteredItems[index].id;
-                String name =
-                    filteredItems[index].data()['Name'] ?? 'Loading...';
-                int type = filteredItems[index].data()['Type'] ?? 'Loading...';
-                if (type == topic) {
-                  return Topic(
-                    name: name,
-                    collectionPath: widget.collectionPath,
-                    id: id,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          createRoute(MainMenuScreen(
-                            collectionPath: '${widget.collectionPath}/$id/$id',
-                            topicName: name,
-                          )));
-                    },
-                  );
-                } else if (type == set) {
-                  return Set(
-                    name: name,
-                    collectionPath: widget.collectionPath,
-                    id: id,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          createRoute(FlashcardMenuScreen(
-                            collectionPath: '${widget.collectionPath}/$id/$id',
-                            setName: name,
-                          )));
-                    },
-                  );
-                } else if (type == needToReview) {
-                  return needToReviewWidget(context, widget.collectionPath, id);
-                }
-                return const SizedBox.shrink();
-              },
-            );
+          padding: EdgeInsets.only(bottom: 100),
+          itemCount: filteredItems.length,
+          itemBuilder: (context, index) {
+            String id = filteredItems[index].id;
+            String name =
+                filteredItems[index].data()['Name'] ?? 'Loading...';
+            int type = filteredItems[index].data()['Type'] ?? 'Loading...';
+            if (type == topic) {
+              return Topic(
+                name: name,
+                collectionPath: widget.collectionPath,
+                id: id,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      createRoute(MainMenuScreen(
+                        collectionPath: '${widget.collectionPath}/$id/$id',
+                        topicName: name,
+                      )));
+                },
+              );
+            } else if (type == set) {
+              return Set(
+                name: name,
+                collectionPath: widget.collectionPath,
+                id: id,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      createRoute(FlashcardMenuScreen(
+                        collectionPath: '${widget.collectionPath}/$id/$id',
+                        setName: name,
+                      )));
+                },
+              );
+            } else if (type == needToReview) {
+              return needToReviewWidget(context, widget.collectionPath, id);
+            }
+            return const SizedBox.shrink();
+          },
+        );
 ```
 
 <img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
