@@ -21,7 +21,7 @@ Topic -> Set -> Flashcard
  ```dart
 String id = DateTime.now().toString(); // Using current date as ensures unique id
 db // Instance of Firebase Firestore
-    .collection(collectionPath)
+    .collection(collectionPath) // Function takes collectionPath as a parameter
     .doc(id) // Creates a doc which stores the Topic collection
     .set({'Name': topicName.text, 'Type': 1});
 db
