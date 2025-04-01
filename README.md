@@ -15,6 +15,18 @@
 - [Creating a Set](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#creating-a-set)
 - [Creating a Flashcard](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#creating-a-flashcard)
 - [Adding an Image](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#adding-an-image)
+- [Reordering Flashcards](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#reordering-flashcards)
+
+[CSV Conversion](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#csv-conversion)
+- [Export CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#export-csv)
+- [Import CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#import-csv)
+
+[Need to Review List](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#need-to-review-list)
+
+[Notification Service](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#notification-service)
+
+
+
 
 
 ## Screens
@@ -168,4 +180,16 @@ Topics can be edited/deleted by clicking the trailing edit icon
 
 ### Adding an Image
 <img height="500" src="https://github.com/user-attachments/assets/a5d19901-af2e-4be6-9b0b-b9c6c2f58bcb">
+
+### Reordering Flashcards
+
+## CSV Conversion
+
+### Export CSV
+
+### Import CSV
+
+## Need to Review List
+
+## Notification Service
 
