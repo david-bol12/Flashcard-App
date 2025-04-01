@@ -119,8 +119,9 @@ return ListView.builder(
           },
         );
 ```
-
-<img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
+</p>
 
 ### Flashcard Set Screen
 
@@ -174,13 +175,19 @@ Topics can be edited/deleted by clicking the trailing edit icon
 
 
 ### Creating a Set
-<img height="500" src="https://github.com/user-attachments/assets/e863a0ff-24a9-44ec-904b-7cf7fbf15267">
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/e863a0ff-24a9-44ec-904b-7cf7fbf15267">
+</p>
 
 ### Creating a Flashcard
-<img height="500" src="https://github.com/user-attachments/assets/4553a877-7613-44e7-a03f-e234bc719be7">
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/4553a877-7613-44e7-a03f-e234bc719be7">
+</p>
 
 ### Adding an Image
-<img height="500" src="https://github.com/user-attachments/assets/a5d19901-af2e-4be6-9b0b-b9c6c2f58bcb">
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/a5d19901-af2e-4be6-9b0b-b9c6c2f58bcb">
+</p>
 
 ### Reordering Flashcards
 
