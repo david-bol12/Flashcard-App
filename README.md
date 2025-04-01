@@ -25,6 +25,8 @@ Flashcard Set Screen -> Test Screen -> Test Result Screen
 
 ### Menu Screen
 
+<img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
+
 ### Flashcard Set Screen
 
 ### Test Screen
