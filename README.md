@@ -35,7 +35,7 @@ Topics/Sets are displayed using a StreamBuilder
 
 StreamBuilder takes in a snapshot from the current Collection Path and filters the items within it based on their type, then based on the search query in the search bar 
 
-    ```dart
+  ```dart
     StreamBuilder(
           stream:
               db.collection(widget.collectionPath).orderBy('Type').snapshots(),
@@ -55,7 +55,7 @@ StreamBuilder takes in a snapshot from the current Collection Path and filters t
               final name = data['Name']?.toLowerCase() ?? '';
               return name.contains(searchQuery);
             }).toList();
-    ```
+  ```
 
 <img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
 
