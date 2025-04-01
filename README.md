@@ -184,6 +184,8 @@ Topics can be edited/deleted by clicking the trailing edit icon
 ### Reordering Flashcards
 
 ## CSV Conversion
+- [Export CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#export-csv)
+- [Import CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#import-csv)
 
 ### Export CSV
 
