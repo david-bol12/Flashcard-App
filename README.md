@@ -17,7 +17,7 @@ Topic -> Set -> Flashcard
 - Topics are collections containing Flashcard Sets or other Topics
 - Flashcard Sets are collections containing Flashcards
 
-  <b>Types are saved as integers to make them easy to index on Menu Screen</b>
+  `Types are saved as integers to make them easy to index on Menu Screen
 
 ### Creating a Topic
 
