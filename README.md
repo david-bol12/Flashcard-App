@@ -30,7 +30,32 @@ Main Menu Screen contains:
   - Any Topics/Sets in the current Collection Path
   - Search bar to search through Topics/Sets
   - Floating Action Button to add new Topics/Sets
-    
+
+Topics/Sets are displayed using a StreamBuilder
+
+StreamBuilder takes in a snapshot from the current Collection Path and filters the items within it based on their type, then based on the search query in the search bar 
+
+    ```dart
+    StreamBuilder(
+          stream:
+              db.collection(widget.collectionPath).orderBy('Type').snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: const CircularProgressIndicator());
+            }
+            if (snapshot.data!.docs.length < 2) {
+              return const Center(child: Text('Add a Set'));
+            }
+
+            final List<QueryDocumentSnapshot<Map<String, dynamic>>> items =
+                snapshot.data!.docs;
+
+            final filteredItems = items.where((item) {
+              final data = item.data();
+              final name = data['Name']?.toLowerCase() ?? '';
+              return name.contains(searchQuery);
+            }).toList();
+    ```
 
 <img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
 
