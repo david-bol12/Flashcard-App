@@ -18,6 +18,17 @@ Topic -> Set -> Flashcard
 - Flashcard Sets are collections containing Flashcards
 
 ### Creating a Topic
+ ```dart
+String id = DateTime.now().toString(); // Using current date as ensures unique id
+db // Instance of Firebase Firestore
+    .collection(collectionPath)
+    .doc(id)
+    .set({'Name': topicName.text, 'Type': 1});
+db
+    .collection('$collectionPath/$id/$id')
+    .doc('~~info~~') // Creating an info doc keeps the Firestore Collection open
+    .set({'Type': -1});
+```
 <img height="500" src="https://github.com/user-attachments/assets/5f38acf1-49d8-4441-9ed6-427fc03fed23">
 
 ### Creating a Set
