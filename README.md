@@ -23,7 +23,10 @@ String id = DateTime.now().toString(); // Using current date as ensures unique i
 db // Instance of Firebase Firestore
     .collection(collectionPath) // Function takes collectionPath as a parameter
     .doc(id) // Creates a doc which stores the Topic collection
-    .set({'Name': topicName.text, 'Type': 1});
+    .set({
+       'Name': topicName.text, // Topic name taken from text field
+       'Type': 1 // Type 1 = Topic
+     });
 db
     .collection('$collectionPath/$id/$id')
     .doc('~~info~~') // Creating an info doc keeps the Firestore Collection open
