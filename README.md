@@ -98,7 +98,7 @@ return ListView.builder(
             } else if (type == needToReview) {
               return needToReviewWidget(context, widget.collectionPath, id);
             }
-            return const SizedBox.shrink();
+            return const SizedBox.shrink(); //Can't return null so return invisible widget
           },
         );
 ```
