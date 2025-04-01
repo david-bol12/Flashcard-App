@@ -20,6 +20,7 @@
 ## Screens
 
 Menu Screen -> Menu Screen/Flashcard Set Screen
+
 Flashcard Set Screen -> Test Screen -> Test Result Screen
 
 ### Menu Screen
@@ -33,6 +34,7 @@ Flashcard Set Screen -> Test Screen -> Test Result Screen
 ## Organisation System
 
 Topic -> Sub Topic/Set
+
 Set -> Flashcard
 - Topics are collections containing Flashcard Sets or other Topics
 - Flashcard Sets are collections containing Flashcards
