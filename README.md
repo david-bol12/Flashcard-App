@@ -22,7 +22,7 @@ Topic -> Set -> Flashcard
 String id = DateTime.now().toString(); // Using current date as ensures unique id
 db // Instance of Firebase Firestore
     .collection(collectionPath)
-    .doc(id)
+    .doc(id) // Creates a doc which stores the Topic collection
     .set({'Name': topicName.text, 'Type': 1});
 db
     .collection('$collectionPath/$id/$id')
