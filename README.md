@@ -4,16 +4,35 @@
 ⚠️ Account system is not yet set up, feel free to add flashcards but please do not edit any prexisting flashcards ⚠️ <br/>
 
 ## Contents
-[Organisation System](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#organisation-system)
+[Screens](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#screens)
+- [Menu Screen](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#menu-screen)
+- [Flashcard Set Screen](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#flashcard-set-screen)
+- [Test Screen](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#test-screen)
+- [Test Result Screen](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#test-result-screen)
+[Organisation System](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#menu-screen)
 - [Creating a Topic](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#creating-a-topic)
 - [Creating a Set](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#creating-a-set)
 - [Creating a Flashcard](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#creating-a-flashcard)
 - [Adding an Image](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#adding-an-image)
 
 
+## Screens
+
+Menu Screen -> Menu Screen/Flashcard Set Screen
+Flashcard Set Screen -> Test Screen -> Test Result Screen
+
+### Menu Screen
+
+### Flashcard Set Screen
+
+### Test Screen
+
+### Test Result Screen
 
 ## Organisation System
-Topic -> Set -> Flashcard
+
+Topic -> Sub Topic/Set
+Set -> Flashcard
 - Topics are collections containing Flashcard Sets or other Topics
 - Flashcard Sets are collections containing Flashcards
 
