@@ -30,6 +30,7 @@ Main Menu Screen contains:
   - Any Topics/Sets in the current Collection Path
   - Search bar to search through Topics/Sets
   - Floating Action Button to add new Topics/Sets
+    
 
 <img height="500" src="https://github.com/user-attachments/assets/41f59126-26e7-42c0-8a20-8576d1c73034">
 
