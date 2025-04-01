@@ -66,6 +66,8 @@ db
     .set({'Type': -1});
 ```
 
+Topics can be edited/deleted by clicking the trailing edit icon
+
 <img height="500" src="https://github.com/user-attachments/assets/5f38acf1-49d8-4441-9ed6-427fc03fed23">
 
 
