@@ -17,6 +17,8 @@ Topic -> Set -> Flashcard
 - Topics are collections containing Flashcard Sets or other Topics
 - Flashcard Sets are collections containing Flashcards
 
+  ** Types are saved as integers to make them easy to index **
+
 ### Creating a Topic
  ```dart
 String id = DateTime.now().toString(); // Using current date as ensures unique id
