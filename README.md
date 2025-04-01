@@ -41,8 +41,6 @@ Set -> Flashcard
 
 ### Creating a Topic
 
-<img height="500" src="https://github.com/user-attachments/assets/5f38acf1-49d8-4441-9ed6-427fc03fed23">
-
 When creating a Topic a dialog box is shown where the user can input the Topic name
 On creating the Topic the below function is called creating:
  - A document in the current Collection Path
@@ -63,6 +61,9 @@ db
     .doc('~~info~~') // Creating an info doc keeps the Firestore Collection open
     .set({'Type': -1});
 ```
+
+<img height="500" src="https://github.com/user-attachments/assets/5f38acf1-49d8-4441-9ed6-427fc03fed23">
+
 
 ### Creating a Set
 <img height="500" src="https://github.com/user-attachments/assets/e863a0ff-24a9-44ec-904b-7cf7fbf15267">
