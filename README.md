@@ -5,7 +5,7 @@
 
 ## Contents
 [Organisation System](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#organisation-system)
-- [Creating a Flashcard](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#organisation-system)
+- [Creating a Topic](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#creating-a-topic)
 
 
 ## Organisation System
