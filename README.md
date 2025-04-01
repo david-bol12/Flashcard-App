@@ -38,22 +38,21 @@ StreamBuilder takes in a snapshot from the current Collection Path and filters t
   ```dart
     StreamBuilder(
           stream:
-              db.collection(widget.collectionPath).orderBy('Type').snapshots(),
+              db.collection(widget.collectionPath).orderBy('Type').snapshots(), // Takes in snapshot stream ordered by type
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: const CircularProgressIndicator());
             }
-            if (snapshot.data!.docs.length < 2) {
+            if (snapshot.data!.docs.length < 2) { // Less than 2 because collection always contains info doc which will not be displayed
               return const Center(child: Text('Add a Set'));
             }
 
-            final List<QueryDocumentSnapshot<Map<String, dynamic>>> items =
-                snapshot.data!.docs;
+            final List<QueryDocumentSnapshot<Map<String, dynamic>>> items = snapshot.data!.docs;
 
             final filteredItems = items.where((item) {
               final data = item.data();
               final name = data['Name']?.toLowerCase() ?? '';
-              return name.contains(searchQuery);
+              return name.contains(searchQuery); // If the item contains the search query, display the item
             }).toList();
   ```
 
