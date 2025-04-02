@@ -135,6 +135,16 @@ Flashcard Set Screen contains:
 
 Similarly to the Menu Screen, the Flashcard Set Screen operates using a StreamBuilder taking in a snapshot stream from the current collection path (ordered by their index), filters the input based on the current search query, and displays the appropriate FlashcardInfo widgets using a ListView.builder
 
+Each Flashcard Object has 6 parameters
+```dart
+    'Type': 'Flashcard', //TODO change to int type system
+    'Front': flashcard.front,
+    'Back': flashcard.back,
+    'Index': snapshot.docs.length, // Index is used to order/reorder flashcards
+    'Front Image': flashcard.frontImage,
+    'Back Image': flashcard.backImage,
+```
+
 <p align="center">
   <img height="500" src="https://github.com/user-attachments/assets/c32ad515-35c1-4c0a-b53a-99bcf4604df94">
 </p>
