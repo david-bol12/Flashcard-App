@@ -197,6 +197,11 @@ Each Flashcard Object has 6 parameters
   <img height="500" src="https://github.com/user-attachments/assets/c32ad515-35c1-4c0a-b53a-99bcf4604df94">
 </p>
 
+Clicking the Test button displays a dialog box where the user can edit a number of test settings before beginning the test
+
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/3997cae8-2c79-4d93-9d43-4ff9f5d33468">
+</p>
 
 ### Test Screen
 
