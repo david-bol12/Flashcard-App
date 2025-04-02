@@ -135,6 +135,54 @@ Flashcard Set Screen contains:
 
 Similarly to the Menu Screen, the Flashcard Set Screen operates using a StreamBuilder taking in a snapshot stream from the current collection path (ordered by their index), filters the input based on the current search query, and displays the appropriate FlashcardInfo widgets using a ListView.builder
 
+```dart
+    StreamBuilder(
+          stream:
+              db.collection(widget.collectionPath).orderBy('Index').snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: const CircularProgressIndicator());
+            }
+            if (snapshot.data!.docs.isEmpty) {
+              return Center(child: Text(widget.emptySetText));
+            }
+            final flashcards = snapshot.data!.docs;
+            final filteredFlashcards = flashcards.where((flashcard) {
+              final String front =
+                  flashcard.data()['Front']?.toLowerCase() ?? '';
+              final String back = flashcard.data()['Back']?.toLowerCase() ?? '';
+              return front.contains(searchQuery) || back.contains(searchQuery);
+            }).toList();
+
+            return ListView.builder(
+                padding: EdgeInsets.only(bottom: 100),
+                itemCount: filteredFlashcards.length,
+                itemBuilder: (context, index) {
+                  String id = filteredFlashcards[index].id;
+                  String front =
+                      filteredFlashcards[index].data()['Front'] ?? '';
+                  String back = filteredFlashcards[index].data()['Back'] ?? '';
+                  String type = filteredFlashcards[index].data()['Type'];
+                  String? frontImage =
+                      filteredFlashcards[index].data()['Front Image'];
+                  String? backImage =
+                      filteredFlashcards[index].data()['Back Image'];
+                  if (type == 'Flashcard') {
+                    return FlashcardInfo(
+                      front: front,
+                      back: back,
+                      collectionPath: widget.collectionPath,
+                      id: id,
+                      frontImage: frontImage,
+                      backImage: backImage,
+                      reviewList: widget.reviewList,
+                    );
+                  }
+                  return null;
+                });
+          }),
+```
+
 Each Flashcard Object has 6 parameters
 ```dart
     'Type': 'Flashcard', //TODO change to int type system
