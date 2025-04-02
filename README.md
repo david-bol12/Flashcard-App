@@ -75,7 +75,7 @@ StreamBuilder takes in a snapshot from the current Collection Path and sorts the
             }).toList();
   ```
 
-Then they the list of filteredItems is intputted into a ListView.builder, displaying the Topic/Set
+Then they the list of filteredItems is intputted into a ListView.builder, displaying the Topic/Set Widget
 
 ```dart
 return ListView.builder(
