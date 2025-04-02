@@ -126,6 +126,19 @@ return ListView.builder(
 </p>
 
 ### Flashcard Set Screen
+Flashcard Set Screen contains:
+  - Any Flashcards in the current Collection Path
+  - Search bar to search through Flashcards
+  - Floating Action Button to add new Flashcards
+  - Floating Action Button to begin Test
+  - A trailing option button in the app bar to export/import flashcards as a CSV, and reorder flashcards
+
+Similarly to the Menu Screen, the Flashcard Set Screen operates using a StreamBuilder taking in a snapshot stream from the current collection path (ordered by their index), filters the input based on the current search query, and displays the appropriate FlashcardInfo widgets using a ListView.builder
+
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/c32ad515-35c1-4c0a-b53a-99bcf4604df94">
+</p>
+
 
 ### Test Screen
 
