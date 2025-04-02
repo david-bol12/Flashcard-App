@@ -204,6 +204,11 @@ Clicking the Test button displays a dialog box where the user can edit a number 
 </p>
 
 ### Test Screen
+
+Test Screen contains:
+  - 1 Flippable Flashcard
+  - FlashcardNavigator Widget
+
 The Test Screen takes in a range of parameters including a list of Flashcards at the current Collection Path
 ```dart
     db
@@ -229,6 +234,78 @@ The Test Screen takes in a range of parameters including a list of Flashcards at
       }
     });
 ```
+
+The Flashcard Widget uses the AnimatedFlipWidget package to flip the widget once tapped.
+
+As the user cycles through the flashcards the Flashcard Widget displays the current flashcard's data
+
+However when moving on to the next flashcard, i needed the Flashcard Widget to reset from whatever state it was currently in, to face-up, hence I edited the package to add a reset method to the Animated Flip Widget's Flip Controller.
+
+ ```dart
+void reset() {
+    duration = const Duration(seconds: 0);
+    _angle = 0;
+    _angleController.sink.add(_angle);
+  }
+```
+
+The FlashcardNavigator widget at the bottom of the screen is used to mark flashcards correct/incorrect and cycle through them.
+
+Marking a card correct/incorrect increments the flashcardIndex, moving to the next flashcard in the list and adds the flashcard to the correct/incorrect list
+
+```dart
+void forward () {
+    setState(() {
+      if(flashcardIndex >= widget.flashcards.length - 1) {
+        Navigator.pop(context);
+        Navigator.push(context, createRoute(
+          TestResultsScreen(
+            correctFlashcards: correctFlashcards,
+            incorrectFlashcards: incorrectFlashcards,
+            reversedReview: widget.reversedReview,
+            collectionPath: widget.collectionPath,
+            setName: widget.setName,
+        )));
+      }
+      else {
+        flashcardIndex++;
+      }
+      flipController.reset();
+    });
+  }
+```
+```dart
+    FlashcardNavigator(
+            onForward: () {
+                forward();
+            },
+            onBack: () {
+              setState(() {
+                flashcardIndex -= flashcardIndex == 0 ?  0 : 1;
+                flipController.reset();
+              });
+            },
+            onCorrect: () {
+                correctFlashcards.add(widget.flashcards[flashcardIndex]);
+                if(widget.removeOnCorrect == true) {
+                  db.collection(widget.collectionPath).doc(widget.flashcards[flashcardIndex].id).delete();
+                }
+                forward();
+            },
+            onIncorrect: () {
+                incorrectFlashcards.add(widget.flashcards[flashcardIndex]);
+                forward();
+            },
+          ),
+```
+
+
+
+
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/b7c96d5c-f296-4c11-85e7-565774746464">
+</p>
+
 
 ### Test Result Screen
 
