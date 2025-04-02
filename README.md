@@ -204,6 +204,31 @@ Clicking the Test button displays a dialog box where the user can edit a number 
 </p>
 
 ### Test Screen
+The Test Screen takes in a range of parameters including a list of Flashcards at the current Collection Path
+```dart
+    db
+        .collection(widget.collectionPath)
+        .orderBy('Index')
+        .get() // Gets Collection Snapshot
+        .then((flashcardsSnapshot) {
+      List<QueryDocumentSnapshot<Map<String, dynamic>>>
+          flashcards = flashcardsSnapshot.docs;
+      if (testOptions['Shuffle'] == true) {
+        flashcards.shuffle();
+      }
+      if (context.mounted) {
+        Navigator.push(
+            context,
+            createRoute(BasicTestScreen(
+              flashcards: flashcards,
+              removeOnCorrect: testOptions['Remove on Correct'] ?? false,
+              reversedReview: testOptions['Reversed Review'] ?? false,
+              collectionPath: widget.collectionPath,
+              setName: widget.setName,
+            )));
+      }
+    });
+```
 
 ### Test Result Screen
 
