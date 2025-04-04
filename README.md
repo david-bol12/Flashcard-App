@@ -310,8 +310,9 @@ void forward () {
 ### Test Result Screen
 
 <p align="center">
-  <img height="500" src="https://github.com/user-attachments/assets/ee9f503d-8327-4580-afb4-ff2bb76bb697">
+  <img height="500" src="https://github.com/user-attachments/assets/e61a4463-b416-49ae-9824-fee434fd492d">
 </p>
+
 
 
 ## Organisation System
