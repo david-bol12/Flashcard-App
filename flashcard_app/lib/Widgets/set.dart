@@ -7,12 +7,14 @@ class Set extends StatelessWidget {
     super.key,
     required this.name,
     required this.collectionPath,
-    required this.id
+    required this.id,
+    required this.onTap,
   });
 
   final String name;
   final String collectionPath;
   final String id;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,9 @@ class Set extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
+        onTap: () {
+          onTap();
+        },
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 10,
@@ -129,7 +134,7 @@ class CreateSet extends StatelessWidget {
                 onPressed: () {
                   String id = DateTime.now().toString();
                   db.collection(collectionPath).doc(id).set({'Name' : setName.text, 'Type' : 2});
-                  db.collection('$collectionPath/$id/$id').doc('~~info~~').set({'Type' : -1, 'Status' : 0});
+                  db.collection('$collectionPath/$id/$id').doc('~~info~~').set({'Type' : -1,});
                   // A collection must have at least 1 document -> info doc fulfills this
                   Navigator.pop(context);
                 },

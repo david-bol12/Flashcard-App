@@ -54,6 +54,7 @@ dependencies:
   timezone: ^0.10.0
   rxdart: ^0.28.0
   confetti: ^0.8.0
+  toastification: ^3.0.2
 
 dependency_overrides:
   win32: ^5.5.4

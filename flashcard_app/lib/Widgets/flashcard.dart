@@ -341,10 +341,9 @@ Future<void> addFlashcard(Flashcard flashcard, String collectionPath) async {
   QuerySnapshot<Map<String, dynamic>> snapshot =
   await db.collection(collectionPath).get();
   db.collection(collectionPath).add({
-    'Type': 'Flashcard',
+    'Type': 'Flashcard', //TODO change to int type system
     'Front': flashcard.front,
     'Back': flashcard.back,
-    'Status': 0,
     'Index': snapshot.docs.length,
     'Front Image': flashcard.frontImage,
     'Back Image': flashcard.backImage,
@@ -484,15 +483,10 @@ class FlashcardInfo extends StatelessWidget {
                                   Flashcard(front, back, frontImage, backImage);
                               addFlashcard(flashcard, '/Topics/Need to Review/Need to Review');
                             },
-                            child: Row(
-                              children: [
-                                const Icon(Icons.star,
+                            child: ListTile(
+                                leading: const Icon(Icons.star,
                                     color: Color(0xfffcba03)),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                const Text('Need to Review'),
-                              ],
+                                title: const Text('Need to Review'),
                             )),
                         PopupMenuItem(
                           onTap: () => showDialog<String>(
@@ -506,14 +500,9 @@ class FlashcardInfo extends StatelessWidget {
                                       frontImageLink: frontImage,
                                     ),
                                   )),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.edit),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Text('Edit'),
-                            ],
+                          child: ListTile(
+                              leading: const Icon(Icons.edit),
+                              title: const Text('Edit'),
                           ),
                         ),
                         PopupMenuItem(
@@ -532,26 +521,18 @@ class FlashcardInfo extends StatelessWidget {
                             }
                             db.collection(collectionPath).doc(id).delete();
                           },
-                          child: Row(
-                            children: [
-                              const Icon(Icons.delete),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Text('Delete'),
-                            ],
+                          child: ListTile(
+                            leading: const Icon(Icons.delete),
+                            title: const Text('Delete'),
                           ),
                         ),
                       ]) : reviewList ?
               PopupMenuButton(
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                        child: Row(
-                          children: [
-                            Icon(Icons.close,),
-                            SizedBox(width: 4,),
-                            Text('Remove from List'),
-                          ],
+                        child: ListTile(
+                          leading: const Icon(Icons.close),
+                          title: const Text('Remove from List'),
                         ),
                       onTap: () {
                         db.collection(collectionPath).doc(id).delete();

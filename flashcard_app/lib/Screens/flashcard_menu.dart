@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:file_saver/file_saver.dart';
+import 'package:toastification/toastification.dart';
 
 class FlashcardMenuScreen extends StatefulWidget {
   const FlashcardMenuScreen({
@@ -209,24 +210,36 @@ class _FlashcardMenuScreenState extends State<FlashcardMenuScreen> {
                     .count()
                     .get()
                     .then((result) => result.count!);
-                if (count > 0 && context.mounted) {
-                  showDialog(
+                if(context.mounted) {
+                  if (count > 1) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            Dialog(
+                              child: TestOptionsDialog(
+                                  collectionPath: widget.collectionPath,
+                                  setName: widget.setName,
+                                  testOptions: widget.reviewList ? {
+                                    'Shuffle': false,
+                                    'Reversed Review': false,
+                                    'Remove on Correct': true,
+                                  } :
+                                  {
+                                    'Shuffle': false,
+                                    'Reversed Review': false,
+                                  }
+                              ),
+                            ));
+                  }
+                  else {
+                    toastification.show(
                       context: context,
-                      builder: (BuildContext context) => Dialog(
-                            child: TestOptionsDialog(
-                              collectionPath: widget.collectionPath,
-                              setName: widget.setName,
-                              testOptions: widget.reviewList ? {
-                                'Shuffle' : false,
-                                'Reversed Review' : false,
-                                'Remove on Correct' : true,
-                              } :
-                              {
-                                'Shuffle' : false,
-                                'Reversed Review' : false,
-                              }
-                            ),
-                          ));
+                      type: ToastificationType.error,
+                      style: ToastificationStyle.flat,
+                      title: Text('No Flashcards to Review'),
+                      autoCloseDuration: const Duration(seconds: 3),
+                    );
+                  }
                 }
               },
               label: const Text('Test'),
@@ -393,31 +406,34 @@ void uploadCsv(String uploadFileData, String collectionPath) {
 }
 
 void exportCsv(String collectionPath, String setName) async {
+  // Web uses FileSaver package as FilePicker does not have web support
+  // Android + Windows use FilePicker as it allows the user to choose where they
+  // store the file
   if (kIsWeb) {
     await db
         .collection(collectionPath)
-        .get()
+        .get() // Gets flashcard set data
         .then((QuerySnapshot snapshot) async {
       List<List<String>> csvData = [];
-      for (DocumentSnapshot doc in snapshot.docs) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      for (DocumentSnapshot flashcard in snapshot.docs) {
+        Map<String, dynamic> data = flashcard.data() as Map<String, dynamic>;
         String? front = data['Front'];
         String? back = data['Back'];
         if (front != null && back != null) {
-          csvData.add([front, back]);
+          csvData.add([front, back]); // Adds the flashcard front + back to CSV
         }
       }
       String csv = ListToCsvConverter().convert(csvData);
-      Uint8List bytes = Uint8List.fromList(utf8.encode(csv));
+      Uint8List bytes = Uint8List.fromList(utf8.encode(csv)); // Web downloads must be in utf8
       await FileSaver.instance
-          .saveFile(name: setName, bytes: bytes, ext: 'csv');
+          .saveFile(name: setName, bytes: bytes, ext: 'csv'); // Saves file to Downloads
     });
   } else {
     PermissionStatus request;
     if (Platform.isAndroid) {
       request = await Permission.manageExternalStorage.request();
     } else {
-      request = PermissionStatus.denied;
+      request = PermissionStatus.denied; // Only Android requires permissions
     }
     if (request.isGranted || !Platform.isAndroid) {
       String? path = await FilePicker.platform.getDirectoryPath();
@@ -509,7 +525,7 @@ class _TestOptionsDialogState extends State<TestOptionsDialog> {
                     db
                         .collection(widget.collectionPath)
                         .orderBy('Index')
-                        .get()
+                        .get() // Gets Collection Snapshot
                         .then((flashcardsSnapshot) {
                       List<QueryDocumentSnapshot<Map<String, dynamic>>>
                           flashcards = flashcardsSnapshot.docs;

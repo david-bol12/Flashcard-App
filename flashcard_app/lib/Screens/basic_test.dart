@@ -84,16 +84,14 @@ class _BasicTestScreenState extends State<BasicTestScreen> {
                 flipController.reset();
               });
             },
-            onRight: () {
+            onCorrect: () {
                 correctFlashcards.add(widget.flashcards[flashcardIndex]);
                 if(widget.removeOnCorrect == true) {
                   db.collection(widget.collectionPath).doc(widget.flashcards[flashcardIndex].id).delete();
                 }
                 forward();
             },
-            onWrong: () {
-                // db.collection(widget.collectionPath).doc(widget.flashcards[flashcardIndex].id)
-                //     .update({'Status' : widget.flashcards[flashcardIndex].data()['Status'] - 1});
+            onIncorrect: () {
                 incorrectFlashcards.add(widget.flashcards[flashcardIndex]);
                 forward();
             },
@@ -108,15 +106,15 @@ class FlashcardNavigator extends StatelessWidget {
 
   final Function onForward;
   final Function onBack;
-  final Function onRight;
-  final Function onWrong;
+  final Function onCorrect;
+  final Function onIncorrect;
 
   const FlashcardNavigator({
     super.key,
     required this.onForward,
     required this.onBack,
-    required this.onRight,
-    required this.onWrong,
+    required this.onCorrect,
+    required this.onIncorrect,
   });
 
   @override
@@ -154,7 +152,7 @@ class FlashcardNavigator extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () {onWrong();},
+              onTap: () {onIncorrect();},
               child: Container(
                 padding: const EdgeInsets.all(padding),
                 decoration: const BoxDecoration(
@@ -170,7 +168,7 @@ class FlashcardNavigator extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () {onRight();},
+              onTap: () {onCorrect();},
               child: Container(
                 padding: const EdgeInsets.all(padding),
                 decoration: const BoxDecoration(

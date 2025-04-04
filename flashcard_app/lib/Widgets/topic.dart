@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flashcard_app/Screens/main_menu.dart';
 
 class Topic extends StatelessWidget {
-  const Topic(
-      {super.key,
-      required this.name,
-      required this.collectionPath,
-      required this.id,
-      required this.color});
+  const Topic({
+    super.key,
+    required this.name,
+    required this.collectionPath,
+    required this.id,
+    required this.onTap,
+  });
 
   final String name;
   final String collectionPath;
   final String id;
-  final Color color;
-
-  // final void onTap;
-
+  final Function onTap;
 
   //TODO DRY Code
   @override
@@ -27,6 +25,9 @@ class Topic extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
+        onTap: () {
+          onTap();
+        },
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 10,
@@ -124,14 +125,14 @@ class CreateTopic extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  String id = DateTime.now().toString();
-                  db
+                  String id = DateTime.now().toString(); // Using current date as ensures unique id
+                  db // Instance of Firebase Firestore
                       .collection(collectionPath)
                       .doc(id)
                       .set({'Name': topicName.text, 'Type': 1});
                   db
                       .collection('$collectionPath/$id/$id')
-                      .doc('~~info~~')
+                      .doc('~~info~~') // Creating an info doc keeps the Firestore Collection open
                       .set({'Type': -1});
                   Navigator.pop(context);
                 },

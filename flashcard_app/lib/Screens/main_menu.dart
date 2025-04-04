@@ -54,8 +54,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     collectionPath: collectionPath,
                     setName: setName,
                     testOptions: {
-                      'Shuffle' : false,
-                      'Reversed Review' : false,
+                      'Shuffle': false,
+                      'Reversed Review': false,
                     },
                   ),
                 ));
@@ -81,67 +81,62 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
         body: StreamBuilder(
           stream:
               db.collection(widget.collectionPath).orderBy('Type').snapshots(),
+          // Takes in snapshot stream ordered by type
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: const CircularProgressIndicator());
             }
             if (snapshot.data!.docs.length < 2) {
+              // Less than 2 because collection always contains info doc which will not be displayed
               return const Center(child: Text('Add a Set'));
             }
 
-            final List<QueryDocumentSnapshot<Map<String, dynamic>>> flashcards =
+            final List<QueryDocumentSnapshot<Map<String, dynamic>>> items =
                 snapshot.data!.docs;
 
-            final filteredFlashcards = flashcards.where((flashcard) {
-              final data = flashcard.data();
+            final filteredItems = items.where((item) {
+              final data = item.data();
               final name = data['Name']?.toLowerCase() ?? '';
-              return name.contains(searchQuery);
+              return name.contains(
+                  searchQuery); // If the item contains the search query, display the item
             }).toList();
 
             return ListView.builder(
               padding: EdgeInsets.only(bottom: 100),
-              itemCount: filteredFlashcards.length,
+              itemCount: filteredItems.length,
               itemBuilder: (context, index) {
-                String id = filteredFlashcards[index].id;
+                String id = filteredItems[index].id;
                 String name =
-                    filteredFlashcards[index].data()['Name'] ?? 'Loading...';
-                int type =
-                    filteredFlashcards[index].data()['Type'] ?? 'Loading...';
-                Color color = Color(int.parse(
-                    filteredFlashcards[index].data()['Color'] ?? '0xFFFFFFFF'));
+                    filteredItems[index].data()['Name'] ?? 'Loading...';
+                int type = filteredItems[index].data()['Type'] ?? 'Loading...';
                 if (type == topic) {
-                  return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            createRoute(MainMenuScreen(
-                              collectionPath:
-                                  '${widget.collectionPath}/$id/$id',
-                              topicName: name,
-                            )));
-                      },
-                      child: Topic(
-                        name: name,
-                        collectionPath: widget.collectionPath,
-                        id: id,
-                        color: color,
-                      ));
+                  return Topic(
+                    name: name,
+                    collectionPath: widget.collectionPath,
+                    id: id,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          createRoute(MainMenuScreen(
+                            collectionPath: '${widget.collectionPath}/$id/$id',
+                            topicName: name,
+                          )));
+                    },
+                  );
                 } else if (type == set) {
-                  return GestureDetector( //TODO replace gesture detector
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            createRoute(FlashcardMenuScreen(
-                              collectionPath:
-                                  '${widget.collectionPath}/$id/$id',
-                              setName: name,
-                            )));
-                      },
-                      child: Set(
-                        name: name,
-                        collectionPath: widget.collectionPath,
-                        id: id,
-                      ));
+                  return Set(
+                    name: name,
+                    collectionPath: widget.collectionPath,
+                    id: id,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          createRoute(FlashcardMenuScreen(
+                            collectionPath: '${widget.collectionPath}/$id/$id',
+                            setName: name,
+                          )));
+                    },
+                  );
                 } else if (type == needToReview) {
                   return needToReviewWidget(context, widget.collectionPath, id);
                 }
@@ -153,42 +148,44 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   }
 }
 
-Widget needToReviewWidget(BuildContext context, String collectionPath, String id) => Card(
-  margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-  elevation: 6,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15),
-  ),
-  child: ListTile(
-    contentPadding: const EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 10,
-    ),
-    onTap: () {
-      Navigator.push(
-          context,
-          createRoute(FlashcardMenuScreen.reviewList(
-            collectionPath: '$collectionPath/$id/$id',
-            setName: 'Need to Review',
-            appBarIcon: Icon(
+Widget needToReviewWidget(
+        BuildContext context, String collectionPath, String id) =>
+    Card(
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 10,
+        ),
+        onTap: () {
+          Navigator.push(
+              context,
+              createRoute(FlashcardMenuScreen.reviewList(
+                collectionPath: '$collectionPath/$id/$id',
+                setName: 'Need to Review',
+                appBarIcon: Icon(
+                  Icons.star,
+                  color: Color(0xfffcba03),
+                ),
+              )));
+        },
+        leading: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Icon(
               Icons.star,
               color: Color(0xfffcba03),
-            ),
-          )));
-    },
-    leading: CircleAvatar(
-        backgroundColor: Colors.white,
-        child: Icon(
-          Icons.star,
-          color: Color(0xfffcba03),
-          size: 30,
-        )),
-    title: Text(
-      'Need to Review',
-      style: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 17,
+              size: 30,
+            )),
+        title: Text(
+          'Need to Review',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
       ),
-    ),
-  ),
-);
+    );

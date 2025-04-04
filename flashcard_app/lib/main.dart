@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flashcard App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x0039a0ed)),
         brightness: Brightness.light,

@@ -86,7 +86,7 @@ class _TestResultsScreenState extends State<TestResultsScreen> {
           NotificationService.scheduledNotification(
               'Time to Study?',
               notificationBody(widget.setName),
-              DateTime.now().add(Duration(hours: 1)),
+              DateTime.now().add(Duration(seconds: 10)),
               payload: '${widget.collectionPath}|*split*|${widget.setName}');
         }
       },
@@ -143,14 +143,14 @@ class _TestResultsScreenState extends State<TestResultsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildStatContainer(
+                  statContainer(
                     label: 'Correct',
                     count: correctCount,
                     color: Colors.greenAccent,
                     icon: Icons.check,
                     flashcards: widget.correctFlashcards,
                   ),
-                  _buildStatContainer(
+                  statContainer(
                     label: 'Incorrect',
                     count: incorrectCount,
                     color: Colors.redAccent,
@@ -243,8 +243,7 @@ class _TestResultsScreenState extends State<TestResultsScreen> {
     );
   }
 
-// Simplified Stat Container
-  Widget _buildStatContainer({
+  Widget statContainer({
     required String label,
     required int count,
     required Color color,
