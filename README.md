@@ -309,10 +309,44 @@ void forward () {
 
 ### Test Result Screen
 
-<p align="center">
-  <img height="500" src="https://github.com/user-attachments/assets/e61a4463-b416-49ae-9824-fee434fd492d">
-</p>
+Test Result Screen Contains:
+  - Confetti Animation
+  - Feedback Message
+  - Correct/Incorrect Stat Containers
+  - Study Reminder Switch
+  - Progress Bar
+  - Retry/Finish FAB
 
+The Confetti animation is imported from the Confetti package. It plays upon the user scoring over 75% in a test.
+
+The Feedback Message displayed depends on the score achieved in the test.
+
+```dart
+String feedback(progress) {
+    Map<double, String> feedbackResponses = {
+      0.25: 'Keep Practicing!',
+      0.5: 'Getting There!',
+      0.75: 'Great Work!',
+      1.0: 'Fantastic!'
+    };
+
+    for (double score in feedbackResponses.keys) {
+      if (progress <= score) {
+        if (score >= 0.75) {
+          Future.delayed(Duration(milliseconds: 500), () {
+            _confettiController.play();
+          });
+        }
+        return feedbackResponses[score] ?? 'Good Job';
+      }
+    }
+    return 'Good Job!';
+  }
+```
+
+<p align="center">
+  <img height="500" src="https://github.com/user-attachments/assets/1984b98d-46af-43d8-bc67-b049d2abe066">
+</p>
 
 
 ## Organisation System
