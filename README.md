@@ -343,6 +343,90 @@ String feedback(progress) {
     return 'Good Job!';
   }
 ```
+The Correct/Incorrect Stat Containers take a count of the correct/incorrect flashcard lists and display the respective value
+
+The Study Reminder Switch can be toggled on and off by the user. This value is checked when the Test Result Screen is closed. If true, it sends a reminder notification to the user after 1 hour.
+
+```dart
+PopScope(
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (sendReminder) {
+          NotificationService.scheduledNotification(
+              'Time to Study?',
+              notificationBody(widget.setName),
+              DateTime.now().add(Duration(hours: 1)),
+              payload: '${widget.collectionPath}|*split*|${widget.setName}'); // Notification payload gives collection path + set name
+        }
+      },
+```
+
+The Progress Bar gets the percentage of correct flashcards and displays it.
+
+```dart
+double progress = (correctCount + incorrectCount) == 0
+        ? 0 // Ensures that it doesn't result in 0 / 0
+        : correctCount / (correctCount + incorrectCount);
+```
+
+It also uses a Tween Animation Builder to animate the bar + value increasing.
+
+```dart
+TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0, end: progress),
+                duration: const Duration(seconds: 2),
+                builder: (context, value, child) {
+                  return Column(
+                    children: [
+                      LinearProgressIndicator(
+                        value: value,
+                        backgroundColor: Colors.grey[300],
+                        color: Colors.blueAccent,
+                        minHeight: 10,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Progress: ${(value * 100).toStringAsFixed(1)}%',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+```
+
+If the user scores less than 100% on a test then the Retry FAB will be displayed. Clicking on it routes the user to another test with all the flashcards they answered incorrectly. Otherwise, a Finish FAB is displayed which simply pops the current screen.
+
+```dart
+floatingActionButton: incorrectCount > 0
+            ? FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      createRoute(BasicTestScreen(
+                        flashcards: widget.incorrectFlashcards,
+                        reversedReview: widget.reversedReview,
+                        collectionPath: widget.collectionPath,
+                        setName: widget.setName,
+                      )));
+                },
+                label: const Text('Retry'),
+                icon: const Icon(Icons.refresh),
+                backgroundColor: Colors.blueAccent,
+              )
+            : FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          label: const Text('Finish'),
+          icon: const Icon(Icons.check_rounded),
+          backgroundColor: Colors.blueAccent,
+        ),
+```
 
 <p align="center">
   <img height="500" src="https://github.com/user-attachments/assets/1984b98d-46af-43d8-bc67-b049d2abe066">
@@ -360,10 +444,11 @@ String feedback(progress) {
 Topic -> Sub Topic/Set
 
 Set -> Flashcard
+
 - Topics are collections containing Flashcard Sets or other Topics
 - Flashcard Sets are collections containing Flashcards
 
-  <b> ** Types are saved as integers to make them easy to index on Menu Screen **</b>
+  ** Types are saved as integers to make them easy to index on Menu Screen **
 
 ### Creating a Topic
 
@@ -395,16 +480,156 @@ Topics can be edited/deleted by clicking the trailing edit icon
 
 
 ### Creating a Set
+
+Creating a set operates nearly identically to creating a Topic, except the type is saved as 2.
+
+```dart
+onPressed: () {
+                  String id = DateTime.now().toString();
+                  db.collection(collectionPath).doc(id).set({'Name' : setName.text, 'Type' : 2});
+                  db.collection('$collectionPath/$id/$id').doc('~~info~~').set({'Type' : -1,});
+                  // A collection must have at least 1 document -> info doc fulfills this
+                  Navigator.pop(context);
+                },
+```
+
 <p align="center">
   <img height="500" src="https://github.com/user-attachments/assets/e863a0ff-24a9-44ec-904b-7cf7fbf15267">
 </p>
 
 ### Creating a Flashcard
+
+Creating a Flashcard once again operates similarly to creating a Topic/Set but with more parameters.
+
+```dart
+class Flashcard {
+  final String front;
+  final String back;
+  final String? frontImage;
+  final String? backImage;
+
+  Flashcard(
+    this.front,
+    this.back,
+    this.frontImage,
+    this.backImage,
+  );
+}
+```
+
+Flashcards are also created with an Index parameter which allows them to be ordered.
+
+```dart
+Future<void> addFlashcard(Flashcard flashcard, String collectionPath) async {
+  QuerySnapshot<Map<String, dynamic>> snapshot =
+  await db.collection(collectionPath).get();
+  db.collection(collectionPath).add({
+    'Type': 'Flashcard', //TODO change to int type system
+    'Front': flashcard.front,
+    'Back': flashcard.back,
+    'Index': snapshot.docs.length,
+    'Front Image': flashcard.frontImage,
+    'Back Image': flashcard.backImage,
+  });
+}
+```
+
+Differently to a Topic/Set, Flashcards also deal with images which need to be uploaded to Cloud Storage.
+
+```dart
+Future<void> createFlashcard(String front, String back, String collectionPath,
+    dynamic frontImage, dynamic backImage) async {
+  String? frontImageLink;
+  String? backImageLink;
+  if (frontImage.runtimeType.toString() == '_File') { // Mobile/Windows devices upload images as files
+    final imageRef = FirebaseStorage.instance
+        .ref()
+        .child('$collectionPath/${DateTime.now()}');
+    await imageRef.putFile(frontImage); // Uploads file to given directory
+    frontImageLink = await imageRef.getDownloadURL(); // Gets download URL so flutter can display it as a network image
+  }
+  if (frontImage.runtimeType == Uint8List) { // On the web images are uploaded as a list of bytes
+    final imageRef = FirebaseStorage.instance
+        .ref()
+        .child('$collectionPath/${DateTime.now()}');
+    await imageRef.putData(frontImage);
+    frontImageLink = await imageRef.getDownloadURL();
+  }
+  if (backImage.runtimeType.toString() == '_File') {
+    final imageRef = FirebaseStorage.instance
+        .ref()
+        .child('$collectionPath/${DateTime.now()}');
+    await imageRef.putFile(backImage);
+    backImageLink = await imageRef.getDownloadURL();
+  }
+  if (backImage.runtimeType == Uint8List) {
+    final imageRef = FirebaseStorage.instance
+        .ref()
+        .child('$collectionPath/${DateTime.now()}');
+    await imageRef.putData(backImage);
+    backImageLink = await imageRef.getDownloadURL();
+  }
+  Flashcard flashcard = Flashcard(front, back, frontImageLink, backImageLink);
+  await addFlashcard(flashcard, collectionPath); // Runs addFlashcard function (shown above) to create Firestore doc
+}
+```
+
 <p align="center">
   <img height="500" src="https://github.com/user-attachments/assets/4553a877-7613-44e7-a03f-e234bc719be7">
 </p>
 
 ### Adding an Image
+
+Flashcards can also be editted to change text and add/remove images.
+
+This means that upon changing a flashcard's image the old image (if any) must be deleted and the new image (if any) must be uploaded.
+
+```dart
+
+// Function ran upon when 'Edit Flashcard' Button is pressed  
+
+onPressed: () async {
+        if (frontStoredImage == null && widget.frontImageLink != null) { // If there is no image
+          // Image -> No Image
+          final Reference imageRef = FirebaseStorage.instance
+              .refFromURL(widget.frontImageLink!);
+          await imageRef.delete();
+        }
+        if (newFrontImage != null) {
+          // No image -> New image,
+          final Reference imageRef = FirebaseStorage.instance
+              .ref()
+              .child(
+                  '${widget.collectionPath}/${DateTime.now()}'); // Cloud Location
+          await imageRef
+              .putFile(newFrontImage!); // Upload image to cloud
+          frontStoredImage = await imageRef
+              .getDownloadURL(); // Get URL to ref image
+        }
+        if (backStoredImage == null && widget.backImageLink != null) {
+          final Reference imageRef = FirebaseStorage.instance
+              .refFromURL(widget.backImageLink!);
+          await imageRef.delete();
+        }
+        if (newBackImage != null) {
+          // No image -> New image,
+          final Reference imageRef = FirebaseStorage.instance
+              .ref()
+              .child(
+                  '${widget.collectionPath}/${DateTime.now()}'); // Cloud Location
+          await imageRef
+              .putFile(newFrontImage!); // Upload image to cloud
+          backStoredImage = await imageRef
+              .getDownloadURL(); // Get URL to ref image
+        }
+        db.collection(widget.collectionPath).doc(widget.id).update({
+          'Front': frontVal.text,
+          'Back': backVal.text,
+          'Front Image': frontStoredImage,
+          'Back Image': backStoredImage,
+        });
+```
+
 <p align="center">
   <img height="500" src="https://github.com/user-attachments/assets/a5d19901-af2e-4be6-9b0b-b9c6c2f58bcb">
 </p>
