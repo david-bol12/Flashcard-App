@@ -20,8 +20,8 @@ Please feel free to view the Web App
 - [Reordering Flashcards](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#reordering-flashcards)
 
 [CSV Conversion](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#csv-conversion)
-- [Export CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#export-csv)
 - [Import CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#import-csv)
+- [Export CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#export-csv)
 
 [Need to Review List](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#need-to-review-list)
 
@@ -636,13 +636,55 @@ onPressed: () async {
 
 ### Reordering Flashcards
 
-## CSV Conversion
-- [Export CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#export-csv)
-- [Import CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#import-csv)
+The Flashcard Reorder Screen operates using the ReorderableListView.builder Widget.
 
-### Export CSV
+Due to the Flashcard Set Screen operating on a StreamBuilder taking snapshots from the Collection Path when the flashcards are reordered there is a small delay between the flashcard being moved and the Index property being updated and a new snapshot recieved.
+
+To solve this issue when reordering flashcards the user is routed to a Flashcard Reorder Screen. A current snapshot of the Collection Path is passed to this screen. The flashcards can then be reordered and their indexes updated before re-routing back to the Flashcard Set Screen where they are ordered by Index.
+
+```dart
+ReorderableListView.builder(
+                padding: EdgeInsets.only(bottom: 100),
+                onReorder: (oldIndex, newIndex) {
+                  QueryDocumentSnapshot<Map<String, dynamic>>
+                      flashcard = flashcards[oldIndex]; // Saves the moved flashcard in a variable
+                      flashcards.removeAt(oldIndex); // Removes said flashcard from list
+                      flashcards.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, flashcard); // Reinserts it at new index
+                },
+                itemCount: flashcards.length,
+                itemBuilder: (context, index) {
+                  String id = flashcards[index].id;
+                  String front = flashcards[index].data()['Front'] ?? '';
+                  String back = flashcards[index].data()['Back'] ?? '';
+                  String type = flashcards[index].data()['Type'];
+                  if (type == 'Flashcard') {
+                    return FlashcardInfo(
+                      front: front,
+                      back: back,
+                      collectionPath: widget.collectionPath,
+                      id: id,
+                      key: Key(index.toString()),
+                      reorder: true,
+                    );
+                  }
+                  return SizedBox.shrink(
+                    key: Key(index.toString()),
+                  );
+                }),
+```
+
+## CSV Conversion
+
+Any Flashcard Set can be exported/imported as a CSV File. This is useful for transferring flashcards from/to other platforms.
+
+- [Import CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#import-csv)
+- [Export CSV](https://github.com/david-bol12/Flashcard-App/blob/main/README.md#export-csv)
 
 ### Import CSV
+
+Importing Flashcards works similarly across all platfroms.
+
+### Export CSV
 
 ## Need to Review List
 
